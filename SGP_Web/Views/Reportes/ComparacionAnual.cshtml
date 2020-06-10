@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "ComparacionAnual";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+<script src="~/Scripts/SGP/ReporteComparacionAnual.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<div id="ComparacionAnual">
+    <div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+        <span>Comparación Anual</span>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtArea">Año</label>
+                <input id="txtAnio" type="text" class="form-control ValidarNumeros EnterPress" maxlength="4" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+        @*<div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtArea">Año Anterior</label>
+                <input id="txtAnioAnterior" type="text" class="form-control ValidarNumeros EnterPress" maxlength="4" data-EnterPress="btnBuscar" />
+            </div>
+        </div>*@
+
+        <div class="col-xl-3 offset-6">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary EnterPress" v-on:Click="ListarComparacionAnual()">Buscar</button>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="form-group">
+                
+                <table id="TbReporteComparacionAnual" class="table table-bordered">
+                    <thead class="table-dark text-light">
+                        <tr>
+                            <th>#</th>
+                            <th>Proyectos</th>
+                            <th>Enero</th>
+                            <th>Febrero</th>
+                            <th>Marzo</th>
+                            <th>Abril</th>
+                            <th>Mayo</th>
+                            <th>Junio</th>
+                            <th>Julio</th>
+                            <th>Agosto</th>
+                            <th>Setiembre</th>
+                            <th>Octubre</th>
+                            <th>Noviembre</th>
+                            <th>Diciembre</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                </table>
+
+
+            </div>
+        </div>
+    </div>
+    <div class="row btnImprimirGrafico d-none">
+        <div class="col-xl-3 offset-9">
+            <div class="form-group ">
+                <button type="button" id="btnImprimirGrafico" class="form-control btn btn-secondary EnterPress" v-on:Click="ImprimirGrafico()">
+                    <span><i class="fa fa-file-text-o fa-1x"> Imprimir</i></span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="form-group">
+                <div id="ReporteGrafico" style="width: 1200px; height: 500px;"></div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+

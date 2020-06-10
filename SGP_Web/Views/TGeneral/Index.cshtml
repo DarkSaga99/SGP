@@ -1,0 +1,209 @@
+﻿
+@{
+    ViewBag.Title = "Mantenimiento de Tabla General";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<link href="~/Content/SGP/Cliente.css" rel="stylesheet" />
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+
+<div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+    <span>Tabla General</span>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-xl-3">
+        <div class="form-group ">
+            <label for="cboTGeneral">Tipo</label>
+            <select id="cboTGeneral" class="form-control">
+                <option value="">Seleccione</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xl-3">
+        <div class="form-group ">
+            <label for="txtTGeneral">Descripcion</label>
+            <input id="txtTGeneral" type="text" class="form-control EnterPress" maxlength="30" data-EnterPress="btnBuscar" />
+        </div>
+    </div>
+
+    <div class="col-xl-3">
+        <div class="form-group ">
+            <label for="btnBuscar">&nbsp;</label>
+            <button type="button" id="btnBuscar" class="form-control btn btn-primary">Buscar</button>
+        </div>
+    </div>
+
+    <div class="col-xl-3">
+        <!-- Button trigger modal -->
+        <div class="form-group ">
+            <label for="btnNuevo">&nbsp;</label>
+            <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Nuevo</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div id="table_content">
+            <div class="table-responsive">
+                <table id="tbTGeneral" cellspacing="0" style="width:100%" class="table table-hover table-bordered table-dark text-dark">
+                    <thead class="text-light">
+                        <tr>
+                            <th>Código</th>
+                            <th>Descripcion</th>
+                            <th>codTgeneral</th>
+                            <th>TGeneral</th>
+                            <th>mo_valor1</th>
+                            <th>mo_valor2</th>
+                            <th>mo_valor3</th>
+                            <th>tx_valor1</th>
+                            <th>tx_valor2</th>
+                            <th>tx_valor3</th>
+                            <th>Activo</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Nueva TGeneral</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group ">
+                                <label for="txtNombreModal">Descripcion</label>
+                                <input id="txtNombreModal" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="100" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group ">
+                                <label for="cboTGeneralModal">TGeneral</label>
+                                <select id="cboTGeneralModal" class="form-control btnGuardarModal"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group ">
+                                <label for="txtmo_valor1Modal">mo_valor1</label>
+                                <input id="txtmo_valor1Modal" type="text" class="form-control btnGuardarModal" maxlength="30" />
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6">
+                            <div class="form-group ">
+                                <label for="txtmo_valor2Modal">mo_valor2</label>
+                                <input id="txtmo_valor2Modal" type="text" class="form-control btnGuardarModal" maxlength="30" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group ">
+                                <label for="txtmo_valor3Modal">mo_valor3</label>
+                                <input id="txtmo_valor3Modal" type="text" class="form-control btnGuardarModal" maxlength="30" />
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6">
+                            <div class="form-group ">
+                                <label for="tx_valor1Modal">tx_valor1</label>
+                                <input id="tx_valor1Modal" type="text" class="form-control btnGuardarModal" maxlength="30" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group ">
+                                <label for="tx_valor2Modal">tx_valor2</label>
+                                <input id="tx_valor2Modal" type="text" class="form-control btnGuardarModal" maxlength="30" />
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6">
+                            <div class="form-group ">
+                                <label for="tx_valor3Modal">tx_valor3</label>
+                                <input id="tx_valor3Modal" type="text" class="form-control btnGuardarModal " maxlength="30" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group ">
+                                <label for="txtDireccionModal">Activo</label>
+                                <div>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="activo" id="rbnActivo" value="S" checked>
+                                        Si
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="activo" id="rbnInactivo" value="N">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer FontfooterModal">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCerrarModal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardarModal">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5 style="color:red;">¿Desea eliminar este TGeneral?</h5>
+            </div>
+            <div class="modal-footer FontfooterModal">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-success" id="btnSiModal">Si</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input id="hidIdTGeneral" type="hidden" />
+
+<script src="~/Scripts/SGP/TGeneral.js"></script>
+
+
+
+
+
+

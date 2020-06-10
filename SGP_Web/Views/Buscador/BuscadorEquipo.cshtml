@@ -1,0 +1,49 @@
+﻿<script src="~/Scripts/SGP/BuscadorEquipo.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<!-- Modal -->
+<div id="appBuscadorEquipo">
+    <div class="modal fade BuscadorEquipo" id="ModalBusqueda" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Busqueda de Equipo</h5>
+                    <button id="closeBuscadorEquipo" type="button" class="close closeBuscadorEquipo" data-dismiss="modal" aria-label="Close" v-on:click="CerrarModalBusqueda()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body container">
+                    <div class="row">
+
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label for="txtBusquedaEquipo">Equipo</label>
+                                <div class="input-group">
+                                    <input id="txtBusquedaEquipo" type="text" class="form-control btnBuscarEquipo EnterPress" data-EnterPress="btnBuscarEquipo" />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-outline-secondary" id="btnBuscarEquipo" type="button" v-on:Click="ListarEquipo()"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <table id="tbEquipo" class="table table-hover table-bordered table-dark text-dark" style="width:100%">
+                                <thead class="text-light">
+                                    <tr>
+                                        <th>Equipo</th>
+                                        <th>Tipo de Equipo</th>
+                                        <th>Responsable</th>
+                                        <th>Estado</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

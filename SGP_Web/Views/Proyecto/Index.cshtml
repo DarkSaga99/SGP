@@ -1,0 +1,288 @@
+﻿
+@{
+    ViewBag.Title = "Mantenimiento de Proyectos";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<link href="~/Content/SGP/Cliente.css" rel="stylesheet" />
+<script src="~/Scripts/SGP/Proyecto.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+
+<div id="app">
+
+    <div class="row Fonthead border-bottom bg-dark text-white">
+        <span>Proyecto</span>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtDescripcion">Nombre Proyecto</label>
+                <input id="txtDescripcionBusqueda" type="text" class="form-control btnBuscar EnterPress" maxlength="15" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="txtSRTBusqueda">SRT</label>
+                <input id="txtSRTBusqueda" type="text" class="form-control btnBuscar EnterPress" maxlength="15" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="txtFechaInicioBusqueda">Fecha Inicio</label>
+                <input type="text" class="form-control ValidarFecha pull-right" id="txtFechaInicioBusqueda" name="txtFechaInicioBusqueda" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary " data-css="ValidarbtnBuscar" v-on:Click="Buscar()">Buscar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="cboEstadoProyecto">Estado</label>
+                <select id="cboEstadoProyecto" class="form-control btnBuscar">
+                    <option value="">Seleccione</option>
+                    <option v-for="lista in dEstadoProyecto" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="txtResponsable">Responsable</label>
+                <div class="input-group">
+                    <input id="txtResponsable" type="text" class="form-control btnBuscar"  />
+                    <div class="input-group-btn">
+                        <button class="btn btn-outline-secondary" id="btnBuscar" type="button" v-on:Click="ListarResponsableBusqueda()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-3 offset-3">
+            <div class="form-group">
+                <label for="btnNuevo">&nbsp;</label>
+                <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal" v-on:Click="nuevo()">Nuevo</button>
+            </div>            
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="table_content">
+                <div class="table-responsive">
+                    <table id="tbTabla" class="table table-hover table-bordered table-dark text-dark" cellspacing="0" style="width:100%">
+                        <thead class="text-light">
+                            <tr>
+                                <th>Proyecto</th>
+                                <th>SRT</th>
+                                <th>Monto total</th>
+                                <th>Cliente</th>
+                                <th>Responsable</th>
+                                <th>F. Inicio</th>
+                                <th>F. Fin</th>
+                                <th>Estado</th>
+                                <th>Recursos</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{tituloModal}}</h5>
+                    <button type="button" class="close" v-on:Click="Salir()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="txtdescripcion">Proyecto</label>
+                                    <input id="txtdescripcion" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="250" />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtSRTProyecto">SRT</label>
+                                    <input id="txtSRTProyecto" type="text" class="form-control btnGuardarModal" maxlength="100" />
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboClienteModal">Cliente</label>
+                                    <select id="cboClienteModal" class="form-control Obligatorio btnGuardarModal">
+                                        <option value="">Seleccione</option>
+                                        <option v-for="lista in dCliente" v-bind:value="lista.co_cliente"> {{ lista.de_cliente }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboMonedaModal">Moneda</label>
+                                    <select id="cboMonedaModal" class="form-control Obligatorio btnGuardarModal">
+                                        <option value="">Seleccione</option>
+                                        <option v-for="lista in dMoneda" v-bind:value="lista.co_moneda"> {{ lista.de_moneda }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtMontoTotal">Monto Total</label>
+                                    <input id="txtMontoTotal" type="text" class="form-control Obligatorio btnGuardarModal Validar2Decimales" maxlength="20" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtMontoPresupuestado">Monto Presupuestado</label>
+                                    <input id="txtMontoPresupuestado" type="text" class="form-control Validar2Decimales btnGuardarModal" maxlength="20" />
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtMontoAvance">Monto Avance</label>
+                                    <input id="txtMontoAvance" type="text" class="form-control Validar2Decimales btnGuardarModal" maxlength="20" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtMontoPendiente">Monto Pendiente</label>
+                                    <input id="txtMontoPendiente" type="text" class="form-control Validar2Decimales btnGuardarModal" maxlength="20" />
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtMontoAdicional">Monto Adicional</label>
+                                    <input id="txtMontoAdicional" type="text" class="form-control Validar2Decimales btnGuardarModal" maxlength="20" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboResponsableModal">Responsable</label>
+                                    <select id="cboResponsableModal" class="form-control Obligatorio btnGuardarModal">
+                                        <option value="">Seleccione</option>
+                                        <option v-for="lista in dResponsable" selected="selectResponsable === lista.co_responsable" v-bind:value="lista.co_responsable"> {{ lista.NombreCompleto }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboEstadoProyectoModal">Estado</label>
+                                    <select id="cboEstadoProyectoModal" class="form-control Obligatorio btnGuardarModal">
+                                        <option value="0">Seleccione</option>
+                                        <option v-for="lista in dEstadoProyecto" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtFechaInicio">Fecha Inicio</label>
+                                    <input type="text" class="form-control ValidarFecha pull-right btnGuardarModal" id="txtFechaInicio" name="txtFechaInicio" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtFechaFin">Fecha Fin</label>
+                                    <input type="text" class="form-control ValidarFecha pull-right btnGuardarModal" id="txtFechaFin" name="txtFechaFin" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModal" v-on:Click="Salir()">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarModal" v-on:Click="Guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Proyecto?</h5>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" id="btnSiModal" v-on:Click="SiModal()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="ResponsableModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Agregar Responsables</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Proyecto?</h5>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" id="btnSiModal" v-on:Click="SiModal()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <input id="hidIdCliente" type="hidden" />
+
+</div>
+
+@{Html.RenderPartial("~/Views/ProyectoRecurso/Index.cshtml");}
+@{Html.RenderPartial("~/Views/Buscador/BuscadorResponsable.cshtml");}

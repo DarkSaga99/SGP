@@ -1,0 +1,86 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<script src="~/Scripts/SGP/Reportes.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+<div id="app">
+
+    <div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+        <span>Reporte Programación de Pagos</span>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtArea">Año</label>
+                <input id="txtAnio" autocomplete="off" type="text" class="form-control ValidarNumeros EnterPress" maxlength="4" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary EnterPress" v-on:Click="ListarProgramacionFacturacion()">Buscar</button>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button"  class="form-control btn btn-info EnterPress" v-on:Click="ListarFacturacionMes()"><i class="fa fa-bar-chart" aria-hidden="true"> Facturación por Mes</i></button>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" class="form-control btn btn-info EnterPress" v-on:Click="ListarCrecimientoProgramacionFacturacion()"><i class="fa fa-line-chart" aria-hidden="true"> Crecimiento Facturación por Mes</i></button>
+            </div>
+        </div>
+    </div>
+    <div class="row btnImprimirGrafico d-none">
+        <div class="col-xl-3 offset-9">
+            <div class="form-group ">
+                <label for="btnImprimirGrafico">&nbsp;</label>
+                <button type="button" id="btnImprimirGrafico" class="form-control btn btn-secondary EnterPress" v-on:Click="ImprimirGrafico()"><i class="fa fa-file-text-o fa-1x"> Imprimir</i></button>
+            </div>
+        </div>
+    </div>
+    <div class="row" id="FilaTabla">
+        <div class="col-xl-12">
+            <table id="TbReporte" class="table table-bordered">
+                <thead class="table-dark text-light">
+                    <tr>
+                        <th>#</th>
+                        <th>Proyecto</th>
+                        <th>Enero</th>
+                        <th>Febrero</th>
+                        <th>Marzo</th>
+                        <th>Abril</th>
+                        <th>Mayo</th>
+                        <th>Junio</th>
+                        <th>Julio</th>
+                        <th>Agosto</th>
+                        <th>Setiembre</th>
+                        <th>Octubre</th>
+                        <th>Noviembre</th>
+                        <th>Diciembre</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+
+    <div class="row" id="ReporteGraficos">
+        <div class="col-xl-12">
+            <div class="form-group">
+                <div id="ReporteGrafico" style="width: 1200px; height: 500px;"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

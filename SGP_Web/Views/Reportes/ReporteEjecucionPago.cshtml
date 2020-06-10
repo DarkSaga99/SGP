@@ -1,0 +1,76 @@
+﻿
+@{
+    ViewBag.Title = "ReporteEjecucionPago";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+
+<script src="~/Scripts/SGP/Reportes.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+<div id="ConsultaEjecucionPago">
+
+    <div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+        <span>Consulta Ejecución de Pago</span>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtSolicitudInterna">Solicitud Interna</label>
+                <input id="txtSolicitudInterna" type="text" class="form-control ValidarNumeros EnterPress" maxlength="30" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtOrdenCompra">Orden de Compra</label>
+                <input id="txtOrdenCompra" type="text" class="form-control ValidarNumeros EnterPress" maxlength="20" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtNroRecepcion">Nro. Recepción</label>
+                <input id="txtNroRecepcion" type="text" class="form-control ValidarNumeros EnterPress" maxlength="20" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary EnterPress" v-on:Click="ListarCronogramaEjecucionPago()">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtFactura">Factura</label>
+                <input id="txtFactura" type="text" class="form-control ValidarNumeros EnterPress" maxlength="50" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+    </div>
+
+    <div class="row" id="FilaTabla">
+        <div class="col-xl-12">
+            <table id="TbReporteEjecucionPago" class="table table-bordered">
+                <thead class="table-dark text-light">
+                    <tr>
+                        <th>Nombre Proyecto</th>
+                        <th>SRT</th>
+                        <th>Solicitud Interna</th>
+                        <th>Orden de Compra</th>
+                        <th>Nro. Recepción</th>
+                        <th>Factura</th>
+                        <th>Importe</th>                        
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+

@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "ReporteProgramacionPago";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+
+<script src="~/Scripts/SGP/Reportes.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+<div id="ConsultaProgramacionPago">
+
+    <div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+        <span>Consulta Programación de Pago</span>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="cboEstadoCronograma">Estado</label>
+                <select id="cboEstadoCronograma" class="form-control" data-EnterPress="btnBuscar">
+                    <option value="">Seleccione</option>
+                    <option v-for="lista in dEstadoCronograma" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="txtFechaInicioBusqueda">Fecha Programada</label>
+                <input type="text" class="form-control ValidarFecha pull-right" id="txtFechaInicioBusqueda" data-EnterPress="btnBuscar" name="txtFechaInicioBusqueda" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="cboResponsable">Responsable</label>
+                <select id="cboResponsable" class="form-control">
+                    <option value="">Seleccione</option>
+                    <option v-for="lista in dResponsable" v-bind:value="lista.co_responsable"> {{ lista.NombreCompleto }}</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary EnterPress" v-on:Click="ListarProgramacionPago()">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" id="FilaTabla">
+        <div class="col-xl-12">
+            <table id="TbReporteProgramacionPago" class="table table-bordered">
+                <thead class="table-dark text-light">
+                    <tr>
+                        <th>Nombre Proyecto</th>
+                        <th>SRT</th>
+                        <th>Fecha Pago</th>
+                        <th>Fecha Programada</th>          
+                        <th>Número Hito</th>
+                        <th>Descripción Hito</th>
+                        <th>Importe</th>
+                        <th>Responsable</th>                        
+                    </tr>
+                </thead>
+            </table>
+
+        </div>
+    </div>
+
+</div>
+
+
+
+

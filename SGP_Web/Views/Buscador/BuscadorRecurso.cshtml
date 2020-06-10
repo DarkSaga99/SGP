@@ -1,0 +1,50 @@
+﻿<script src="~/Scripts/SGP/BuscadorRecurso.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<!-- Modal -->
+<div id="appBuscadorRecurso">
+    <div class="modal fade BuscadorRecurso" id="ModalBusqueda" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Busqueda de Recursos</h5>
+                    <button type="button" class="close closeBuscadorRecurso" data-dismiss="modal" aria-label="Close" v-on:click="CerrarModalBusqueda()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body container">
+                    <div class="row">
+
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label for="txtBusquedaRecurso">Recurso</label>
+                                <div class="input-group">
+                                    <input id="txtBusquedaRecurso" type="text" class="form-control btnBuscarRecurso EnterPress" data-EnterPress="btnBuscarRecurso" />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-outline-secondary" id="btnBuscarRecurso" type="button" v-on:Click="Listar()"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <table id="tbRecursos" class="table table-hover table-bordered table-dark text-dark" style="width:100%">
+                                <thead class="text-light">
+                                    <tr>
+                                        <th>Nombres</th>
+                                        <th>Tipo Documento</th>
+                                        <th>Nro. Documento</th>
+                                        <th>Area</th>
+                                        <th>F. Ingreso</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,54 @@
+﻿<script src="~/Scripts/SGP/Buscador.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<!-- Modal -->
+<div id="appBuscador">
+    <div class="modal fade" id="ModalBusqueda" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Busqueda Proyecto</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click="CerrarModalBusqueda()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body container">
+                    <div class="row">
+
+                        <div class="col-xl-12">
+                            <div class="form-group">
+                                <label for="txtProyectoBusqueda">Proyecto</label>
+                                <div class="input-group">
+                                    <input id="txtProyectoBusqueda" type="text" class="form-control btnBuscarProyecto EnterPress" data-EnterPress="btnBuscarProyecto" />
+                                    <div class="input-group-btn">
+                                        <button class="btn btn-outline-secondary" id="btnBuscarProyecto" type="button" v-on:Click="ListarProyecto()"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>    
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <table id="tbProyecto" class="table table-hover table-bordered table-dark text-dark" style="width:100%">
+                                <thead class="text-light">
+                                    <tr>
+                                        <th>Codigo</th>
+                                        <th>Descripción</th>
+                                        <th>SRT</th>
+                                        <th>Monto total</th>
+                                        <th>Estado</th>
+                                        <th>Cliente</th>
+                                        <th>Moneda</th>
+                                        <th>cod_moneda</th>                                        
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

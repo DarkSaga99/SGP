@@ -1,0 +1,40 @@
+﻿
+@{
+    ViewBag.Title = "FacturacionMes";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<script src="~/Scripts/SGP/Reportes.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<div id="FacturacionMes">
+    <div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+        <span>Facturación por Mes</span>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtArea">Año</label>
+                <input id="txtAnio" type="text" class="form-control ValidarNumeros EnterPress" maxlength="4" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+
+        <div class="col-xl-3 offset-6">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary EnterPress" v-on:Click="ListarFacturacionMes()">Buscar</button>
+            </div>
+        </div>
+    </div>
+    <br /><br /><br />
+    <div class="row">
+        <div class="col-xl-12">
+            <div class="form-group">
+                <div id="ReporteGrafico" style="width: 1200px; height: 500px;"></div>
+            </div>            
+        </div>
+    </div>
+</div>
+

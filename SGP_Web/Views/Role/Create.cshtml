@@ -1,0 +1,22 @@
+﻿@model Microsoft.AspNet.Identity.EntityFramework.IdentityRole
+@{
+    ViewBag.Title = "Roles";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+    <span>Ingresar Roles</span>
+</div>
+
+<br />
+
+@using (Html.BeginForm())
+{
+    <p> Ingrese el nombre del rol del usuario:</p>
+
+    @Html.EditorFor(m => m.Name)
+    <input type="submit" value="Create Role" />
+}

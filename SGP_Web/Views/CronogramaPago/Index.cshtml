@@ -1,0 +1,250 @@
+﻿
+@{
+    ViewBag.Title = "Mantenimiento de Recursos";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<link href="~/Content/SGP/Cliente.css" rel="stylesheet" />
+<script src="~/Scripts/SGP/CronogramaPago.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+
+<div id="appCronogramaPagos">
+    <div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+        <span>Programación Pagos</span>
+    </div>
+
+    <br />
+    <div class="row">
+        <div class="col-xl-6 ">
+            <div class="form-group ">
+                <label for="txtProyecto">Proyecto</label>
+                <div class="input-group">
+                    <input id="txtProyecto" type="text" class="form-control btnBuscar" disabled />
+                    <div class="input-group-btn">
+                        <button class="btn btn-outline-secondary" type="button" v-on:Click="AbrirModalBusqueda()"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtSRT">SRT</label>
+                <input id="txtSRT" type="text" class="form-control btnBuscar" disabled />
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtFechaIniProyecto">Fecha Inicio</label>
+                <input id="txtFechaIniProyecto" type="text" class="form-control" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-xl-3 ">
+            <div class="form-group ">
+                <label for="txtMontoTotal">Monto Total</label>
+                <input id="txtMontoTotal" type="text" class="form-control Validar2Decimales" disabled />
+            </div>
+        </div>
+        <div class="col-xl-3 ">
+            <div class="form-group ">
+                <label for="txtSaldoTotal">Saldo Total</label>
+                <input id="txtSaldoTotal" type="text" class="form-control Validar2Decimales" v-model="SaldoTotal" disabled />
+            </div>
+        </div>
+        <div class="col-xl-3 ">
+            <div class="form-group ">
+                <label for="txtEstadoProyecto">Estado</label>
+                <input id="txtEstadoProyecto" type="text" class="form-control" disabled />
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtFechaFinProyecto">Fecha Fin</label>
+                <input id="txtFechaFinProyecto" type="text" class="form-control" disabled />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div v-if="IdProyecto != '' " class="col-xl-6">
+                <h5>El importe total hasta el momento es de  <span id="txtImporteTotal" class="badge badge-primary"></span></h5>
+        </div>
+
+        <div v-if="IdProyecto != '' && SaldoTotal != '0'"   class="col-xl-3 offset-3">
+                <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal" v-on:Click="nuevo()">Nuevo</button>
+        </div>
+    </div>
+
+    <div class="row" >
+        <div class="col-xl-12">
+            <div id="table_content">
+                <div class="table-responsive">
+                    <table id="tbPrincipal" class="table table-hover table-bordered table-dark text-dark" cellspacing="0" style="width:100%">
+                        <thead class="text-light">
+                            <tr>
+                                <th class="d-none">Cronograma</th>
+                                <th class="d-none">Cod Proyecto</th>
+                                <th>Cuota</th>
+                                <th>Descripción</th>
+                                <th>Fecha Programada</th>
+                                <th class="d-none">Moneda</th>
+                                <th>Importe</th>
+                                <th class="d-none">Observacion Cronograma</th>
+                                <th class="d-none">Fecha Pago</th>
+                                <th>Orden Compra</th>
+                                <th>Nro. Recepción</th>
+                                <th>Sol. Interna</th>
+                                <th class="d-none">cod Estado</th>
+                                <th>Estado</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered " role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal ">
+                    <h5 class="modal-title" id="TituloCronogramaPago">Proyecto  {{desProyeto}}</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+                        <input id="hidId" type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtImporte">Importe</label>
+                                    <div class="input-group">
+                                        <span class="input-group-append">
+                                            <div class="input-group-text bg-transparent">{{SimboloMoneda}}</div>
+                                        </span>
+                                        <input id="txtImporte" type="text" class="form-control Validar2Decimales Obligatorio btnGuardarModal" maxlength="15" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtFechaProgramada">Fecha Programada</label>
+                                    <input id="txtFechaProgramada" type="text" class="form-control ValidarFecha btnGuardarModal" maxlength="10"  />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-xl-4">
+                                <div class="form-group">
+                                    <label for="txtSolicitudInterna">Solicitud Interna</label>
+                                    <input id="txtSolicitudInterna" type="text" class="form-control btnGuardarModal" maxlength="15" />
+                                </div>
+                            </div>
+
+                            <div class="col-xl-4">
+                                <div class="form-group">
+                                    <label for="txtOrdenCompra">Orden Compra</label>
+                                    <input id="txtOrdenCompra" type="text" class="form-control btnGuardarModal" maxlength="15" />
+                                </div>
+                            </div>
+                            <div class="col-xl-4">
+                                <div class="form-group">
+                                    <label for="txtNroRecepcion">Nro. Recepción</label>
+                                    <input id="txtNroRecepcion" type="text" class="form-control  btnGuardarModal" maxlength="15" />
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="txtDescripcionHito">Descripcion Hito</label>
+                                    <input id="txtDescripcionHito" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="100" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="txtObservacionCronograma">Observación Cronograma:</label>
+                                    <textarea class="form-control btnGuardarModal" rows="5" id="txtObservacionCronograma" name="text"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtFechaPago">Fecha Pago</label>
+                                    <input type="text" class="form-control ValidarFecha btnGuardarModal" id="txtFechaPago" maxlength="10" >
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtCuota">Cuota</label>
+                                    <input id="txtCuota" type="text" class="form-control ValidarNumeros Obligatorio btnGuardarModal" maxlength="5" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboEstadoCronograma">Estado</label>
+                                    <select id="cboEstadoCronograma" class="form-control Obligatorio btnGuardarModal">
+                                        <option value="0">Seleccione</option>
+                                        <option v-for="lista in dEstadoCronograma" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCerrarModal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarModal" v-on:Click="Guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Cronograma?</h5>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" id="btnSiModal" v-on:Click="SiModal()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <input type="hidden" id="IdProyecto" value="" />
+</div>
+
+@{Html.RenderPartial("~/Views/Buscador/Buscador.cshtml");}
+
+@*@{ Html.RenderAction("Index", "CronogramaEjecucion"); }*@
+

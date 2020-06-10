@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html class="SmallerPage">
+<head>
+    <title>@ViewBag.Title</title>
+    <meta charset="utf-8">
+
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximun-scale=1.0, minimum-scale=1.0">
+
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/jquery.dataTables.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/datepicker/datepicker3.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/all.css")" rel="stylesheet" type="text/css" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/Roboto.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/SGP/Layout.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/SGP/Inicio.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-3.4.1.min.js")" type="text/javascript"></script>
+    <script src="~/Scripts/jquery-ui.js"></script>
+    <script src="@Url.Content("~/Scripts/popper.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/bootstrap.min.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/jquery.dataTables.min.js")" type="text/javascript"></script>
+
+    <script src="@Url.Content("~/Scripts/dataTables.buttons.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.buttons.flash.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.jszip.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.pdfmake.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.vfs_fonts.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.buttons.html5.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/dataTables.buttons.print.min.js")"></script>
+
+    <script src="@Url.Content("~/Scripts/Google.charts.loader.js")"></script>
+
+    <script src="@Url.Content("~/datepicker/bootstrap-datepicker.js")" type="text/javascript"></script>
+    <script src="@Url.Content("~/Scripts/SGP/Layout.js")" type="text/javascript"></script>
+    <script src="~/Scripts/Vue/vue.min.js"></script>
+    <script src="~/Scripts/Vue/axios.min.js"></script>
+    <script src="../Scripts/jquery.inputmask.bundle.min.js"></script>
+
+
+
+    <style type="text/css">
+        body {
+            margin: 0;
+            background: #ececec;
+            font-family: 'arial', sans serif;
+        }
+
+        .contenedor {
+            background: #fafafa;
+            width: 80%;
+            margin: 0 auto;
+            padding: 30px 10px;
+            text-align: justify;
+        }
+        .contenedor img {
+                width: 100%;
+            }
+    </style>
+</head>
+<body onload="zoom()">
+
+    <div id="wrapper" data-spy="scroll" data-target="#spy" class="">
+
+        <div id="sidebar-wrapper" class="">
+            <div class="nav-side-menu">
+                <div class="brand">SGP</div>
+                <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+
+                <div class="menu-list">
+
+                    <ul id="menu-content" class="menu-content collapse out">
+                        <li>
+                            <a href="/Inicio"><i class="fa fa-home fa-lg"></i> Inicio</a>
+                        </li>
+                        <li data-toggle="collapse" data-target="#products" class="collapsed active">
+                            <a href="#"><i class="fas fa-wrench fa-lg"></i> Mantenimiento <span class="arrow"></span></a>
+                        </li>
+
+                        <ul class="sub-menu collapse MenuStatic" id="products">
+                            <a class="nounderline" href='@Url.Action("Index", "Cliente")'><li class="menu-option-color">Clientes</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Recurso")'><li class="menu-option-color">Recursos</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Area")'><li class="menu-option-color">Areas</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Proveedor")'><li class="menu-option-color">Proveedores</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Responsable")'><li class="menu-option-color">Responsables</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Ccosto")'><li class="menu-option-color">Centro Costos</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Moneda")'><li class="menu-option-color">Moneda</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Unidad")'><li class="menu-option-color">Unidades</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "GrupoPartida")'><li class="menu-option-color">Grupo Partidas</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Partida")'><li class="menu-option-color">Partidas</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "TGeneral")'><li class="menu-option-color">Tabla General</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "TipoCambio")'><li class="menu-option-color">Tipo Cambio</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Equipo")'><li class="menu-option-color">Equipo</li></a>
+                        </ul>
+
+                        <li data-toggle="collapse" data-target="#service" class="collapsed">
+                            <a href="#"><i class="fas fa-cog fa-lg"></i> Operaciones <span class="arrow"></span></a>
+                        </li>
+
+                        <ul class="sub-menu collapse MenuStatic" id="service">
+                            <a class="nounderline" href='@Url.Action("Index", "Proyecto")'><li class="menu-option-color">Proyectos</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "CronogramaPago")'><li class="menu-option-color">Programación Pagos</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "CronogramaEjecucion")'><li class="menu-option-color">Pagos Ejecución</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "RecursoContrato")'><li class="menu-option-color">Contrato Recurso</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "CostoDirecto")'><li class="menu-option-color">Costos Directos</li></a>
+                        </ul>
+
+                        <li data-toggle="collapse" data-target="#Reportes" class="collapsed">
+                            <a href="#"><i class="fas fa-print fa-lg"></i> Reportes <span class="arrow"></span></a>
+                        </li>
+                        <ul class="sub-menu collapse MenuStatic" id="Reportes">
+                            <a class="nounderline" href='@Url.Action("Index", "Reportes")'><li class="menu-option-color">Reporte Programación de Pagos</li></a>
+                            <a class="nounderline" href='@Url.Action("ComparacionAnual", "Reportes")'><li class="menu-option-color">Comparación Anual</li></a>
+                            <a class="nounderline" href='@Url.Action("ReporteEjecucionPago", "Reportes")'><li class="menu-option-color">Consulta Ejecución de Pagos</li></a>
+                            <a class="nounderline" href='@Url.Action("ReporteProgramacionPago", "Reportes")'><li class="menu-option-color">Consulta Programación de Pagos</li></a>
+                        </ul>
+
+
+                        @*<li>
+                                <a href="#">
+                                    <i class="fa fa-user fa-lg"></i> Perfiles
+                                </a>
+                            </li>*@
+                        <li data-toggle="collapse" data-target="#Usuarios" class="collapsed">
+                            <a href="#"><i class="fa fa-users fa-lg"></i> Usuarios<span class="arrow"></span></a>
+                        </li>
+                        <ul class="sub-menu collapse MenuStatic" id="Usuarios">
+                            <a class="nounderline" href='@Url.Action("Users", "Account")'><li class="menu-option-color">Usuario</li></a>
+                            <a class="nounderline" href='@Url.Action("Index", "Role")'><li class="menu-option-color">Roles</li></a>
+                        </ul>
+                        <li>
+                            <a href="#">
+                                <i class="fa fa-users fa-lg"></i> @Html.ActionLink("Cerrar Sesion", "Index", "Login") @*Cerrar Sesión*@
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div id="page-content-wrapper" class="">
+            <div class="container-fluid">
+                <div id="renderbody">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    <br />
+    <br />
+
+    <footer class="footer fixed-bottom">
+
+        <h1 style="font-size:medium; font-family:'MS UI Gothic'; color:white; text-align:center;">Sistema Control de Proyectos V1.0</h1>
+
+    </footer>
+
+    <div class="WaitLayer"><></div>
+    <script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+    <script>
+        function zoom() {
+            document.body.style.zoom = "80%"
+        }
+
+        //if (screen.width >= 1200) {
+        //    document.write('<style>body{zoom:75%;}</style>')
+        //};
+        //if (screen.width >= 1600) {
+        //    document.write('<style>body{zoom:100%;}</style>')
+        //};
+
+        $('html').css("scale", 0.5);
+        $(".MenuStatic a").click(function () {
+            $.ajax({
+                type: "POST",
+                url: $(this).attr("href"),
+                success: function (data) {
+                    $("#renderbody").html(data);
+                }
+            })
+            return false;
+        })
+        $body = $("body");
+        $(document).on({
+            ajaxStart: function () { $body.addClass("loading"); },
+            ajaxStop: function () { $body.removeClass("loading"); }
+        });
+
+        $(".MenuStatic li").click(function () {
+            $(".MenuStatic li").removeClass('active');
+            $(this).addClass('active');
+        })
+
+    </script>
+
+
+
+
+</body>
+</html>

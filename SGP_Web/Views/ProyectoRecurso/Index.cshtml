@@ -1,0 +1,68 @@
+﻿
+<script src="~/Scripts/SGP/ProyectoRecurso.js"></script>
+<link href="~/Content/SGP/ProyectoRecurso.css" rel="stylesheet" />
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<!-- Modal -->
+<div id="appProyectoRecurso">
+    <div class="modal fade" id="ModalProyectoRecurso" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Asignar Recurso</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body container">
+
+                    <div class="row">
+                        <div class="col-xl-5">
+                            <div class="col-xs-12">
+                                <h5>Recursos Asignados :  <span id="txtNroRecursos" class="badge badge-primary"></span></h5>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-3 offset-4">
+                            <div class="form-group col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+                                <button class="btn btn-primary col-xl-12" id="btnGuardar" type="button" v-on:Click="GuardarRecurso()">Guardar</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="container">
+                                <table class="table table-bordered text-dark table-fixed">
+                                    <thead class="text-light table-dark">
+                                        <tr>
+                                            <th width="5%"></th>
+                                            <th class="d-none">Codigo</th>
+                                            <th width="40%">Recurso</th>
+                                            <th class="d-none">co_recurso</th>
+                                            <th width="25%">Area</th>
+                                            <th class="d-none">co_rol</th>
+                                            <th class="d-none">Rol</th>
+                                            <th width="10%">Porcentaje %</th>
+                                            <th width="20%">Rol</th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                            <div id="contenedorTabla">
+                                @*<div id="DivBody" class="DivBody container-fluid pre-scrollable ">
+                                        <div style="height: 100vh;">
+                                            <table id="tbProyectoRecurso" class="table table-hover">
+                                                <tbody id="BodyGrillas" class="tbody"></tbody>
+                                            </table>
+                                        </div>
+                                    </div>*@
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

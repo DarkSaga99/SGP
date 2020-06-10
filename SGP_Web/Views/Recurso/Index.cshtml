@@ -1,0 +1,333 @@
+﻿
+@{
+    ViewBag.Title = "Mantenimiento de Recursos";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<link href="~/Content/SGP/Cliente.css" rel="stylesheet" />
+<script src="~/Scripts/SGP/Recurso.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-mockjax/1.6.2/jquery.mockjax.min.js"></script>
+
+
+<div id="app">
+    <div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+        <span>Recursos</span>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="cboTipoDocumento">Tipo Documento</label>
+                <select id="cboTipoDocumento" class="form-control btnBuscar TipoDocumento">
+                    <option value="">Seleccione</option>
+                    <option v-for="lista in dTipoDocumento"  v-bind:value="lista.co_codigo" v-bind:data-documento="lista.tx_valor1"> {{ lista.de_tabla }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="txtNroDocumento">Nº Documento</label>
+                <input id="txtNroDocumento" v-model="txtNroDocumento" type="text" class="form-control EvaluarDocumento btnBuscar EnterPress" maxlength="15" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="txtNombre">Nombre</label>
+                <input id="txtNombre"  type="text" class="form-control ValidarAlfabeticos btnBuscar EnterPress" maxlength="100" data-EnterPress="btnBuscar" />
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary" data-css="ValidarbtnBuscar" v-on:Click="Buscar()">Buscar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3 offset-9">
+            <!-- Button trigger modal -->
+            <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal" v-on:Click="nuevo()">Nuevo</button>
+        </div>
+    </div>
+    <br />
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="table_content">
+                <div class="table-responsive">
+                    <table id="tbPrincipal" class="table table-hover table-bordered table-dark text-dark" cellspacing="0" style="width:100%">
+                        <thead class="text-light">
+                            <tr>
+                                <th class="d-none">Código</th>
+                                <th class="d-none">Cod Documento</th>
+                                <th>Tipo Documento</th>
+                                <th>N° Documento</th>
+                                <th>Recurso</th>
+                                <th class="d-none">Nombre</th>
+                                <th class="d-none">Apellido Paterno</th>
+                                <th class="d-none">Apellido Materno</th>
+                                <th class="d-none">Dirección</th>
+                                <th class="d-none">CodArea</th>
+                                <th>Área</th>
+                                <th>Fecha Ingreso</th>
+                                <th>Fecha Cese</th>
+                                <th class="d-none">CodMoneda</th>
+                                <th class="d-none">Moneda</th>
+                                <th class="d-none">mo_tarifa</th>
+                                <th class="d-none">Teléfono</th>
+                                <th class="d-none">cod Estado</th>
+                                <th>Activo</th>
+                                <th class="d-none">CodUbigeo</th>
+                                <th>Foto</th>
+                                @*<th>Foto</th>*@
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                            
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Nuevo Recurso</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="container">
+                        <input id="hidId" type="hidden" />
+                        <div class="row">
+                            <div class="col-xl-3">
+                                <div class="col-xl">
+                                    <div class="card">
+                                        @*<img class="card-img-top" src="images/default-avatar.png">*@
+                                        <div class="card-body">
+                                            <div class="form-group">
+                                                <img id="imgSalida" class="col-xl-12" src="" />
+                                                @*<input name="file-input" id="file-input" type="file" />*@
+                                                <br />
+                                                <div>
+                                                    <label class="fileContainer">
+                                                        Seleccione Imagen
+                                                        <input type="file" class="" id="txtImagenRecurso">
+                                                    </label>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="col-xl-9">
+                                <div class="row">
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="cboTipoDocumentoModal">Tipo Documento</label>
+                                            <select id="cboTipoDocumentoModal" v-model="selectedDocumento" class="form-control Obligatorio btnGuardarModal TipoDocumentoModal">
+                                                <option value="0">Seleccione</option>
+                                                <option v-for="lista in dTipoDocumento" selected="selectedDocumento === lista.co_codigo" v-bind:value="lista.co_codigo" v-bind:data-documento="lista.tx_valor1"> {{ lista.de_tabla }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="txtNroDocumentoModal">Nº Documento</label>
+                                            <input id="txtNroDocumentoModal" type="text" class="form-control EvaluarDocumentoModal Obligatorio btnGuardarModal" maxlength="15" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="activo">Activo</label>
+                                            <div>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="activo" id="rbnActivo" value="1" checked>
+                                                    Si
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="activo" id="rbnInactivo" value="0">
+                                                    No
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="txtNombreModal">Nombre</label>
+                                            <input id="txtNombreModal" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="100" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="txtApellidoPaternoModal">Apellido Paterno</label>
+                                            <input id="txtApellidoPaternoModal" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="100" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="txtApellidoMaternoModal">Apellido Materno</label>
+                                            <input id="txtApellidoMaternoModal" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="100" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="txtTelefonoModal">Teléfono</label>
+                                            <input id="txtTelefonoModal" type="text" class="form-control ValidarNumeros btnGuardarModal" maxlength="15" />
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group ">
+                                            <label for="cboAreaModal">Área</label>
+                                            <select id="cboAreaModal" class="form-control Obligatorio btnGuardarModal" v-model="selectArea">
+                                                <option value="">Seleccione</option>
+                                                <option v-for="lista in dArea" selected="selectArea === lista.co_area" v-bind:value="lista.co_area"> {{ lista.de_area }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="cboMonedaModal">Moneda</label>
+                                            <select id="cboMonedaModal" class="form-control Obligatorio btnGuardarModal" v-model="selectMoneda">
+                                                <option value="">Seleccione</option>
+                                                <option v-for="lista in dMoneda" selected="selectMoneda === lista.co_moneda" v-bind:value="lista.co_moneda"> {{ lista.de_moneda }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="cboDepartamento">Departamento</label>
+                                            <select id="cboDepartamento" class="form-control Obligatorio Obligatorio btnGuardarModal" v-model="selectedDepartamento" v-on:Change="ListarProvincia()">
+                                                <option value="">Seleccione</option>
+                                                <option v-for="item in dDepartamentos" selected="selectedDepartamento === item.co_ubigeo" v-bind:value="item.co_ubigeo">{{ item.de_ubigeo }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="cboProvincia">Provincia</label>
+                                            <select id="cboProvincia" class="form-control Obligatorio Obligatorio btnGuardarModal" v-model="selectedProvincia" v-on:Change="ListarDistrito()">
+                                                <option value="">Seleccione</option>
+                                                <option v-for="item in dProvincia" selected="selectedProvincia === item.co_ubigeo" v-bind:value="item.co_ubigeo">{{ item.de_ubigeo }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="cboDistrito">Distrito</label>
+                                            <select id="cboDistrito" class="form-control Obligatorio Obligatorio btnGuardarModal" v-model="selectedDistrito">
+                                                <option value="">Seleccione</option>
+                                                <option v-for="item in dDistrito" selected="selectedDistrito === item.co_ubigeo" v-bind:value="item.co_ubigeo">{{ item.de_ubigeo }}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-xl-12">
+                                        <div class="form-group">
+                                            <label for="txtDireccionModal">Dirección</label>
+                                            <input id="txtDireccionModal" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="100" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="dtRegistroModal">Fecha Registro</label>
+                                            <input type="text" class="form-control ValidarFecha pull-right btnGuardarModal" id="dtRegistroModal" name="dtRegistroModal" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-lg-4">
+                                        <div class="form-group">
+                                            <label for="dtCeseModal">Fecha Cese</label>
+                                            <input type="text" class="form-control ValidarFecha pull-right btnGuardarModal" id="dtCeseModal" name="dtCeseModal" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-4">
+                                        <div class="form-group">
+                                            <label for="txtTarifaModal">Tarifa</label>
+                                            <input id="txtTarifaModal" type="text" class="form-control Validar2Decimales btnGuardarModal" maxlength="10" />
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCerrarModal">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarModal" v-on:Click="Guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Recurso?</h5>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" id="btnSiModal" v-on:Click="SiModal()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div id="DivModalImagen" class="ModalImg">
+        <span class="CerrarModalImg">&times;</span>
+        <img class="ModalImg-Content" id="ImgModal">
+        <div id="caption"></div>
+    </div>
+    <div class="popup" style="">
+        Popup text...
+    </div>
+
+</div>
+
+
+
+
+  
+

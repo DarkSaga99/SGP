@@ -1,0 +1,221 @@
+﻿
+@{
+    ViewBag.Title = "Mantenimiento de Proyectos";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+
+<script type="text/javascript" src="~/Scripts/SGP/Equipo.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<div id="app">
+
+    <div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+        <span>Equipo</span>
+    </div>
+
+    <br />
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="txtEquipo">Nombre del Equipo</label>
+                <input type="text" class="form-control " id="txtEquipo">
+            </div>
+        </div>
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="txtFecha">Fecha</label>
+                <input type="text" class="form-control ValidarFecha pull-right btnGuardarModal" id="txtFecha" name="txtFecha" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="cboTipoEquipo">Tipo Equipo</label>
+                <select id="cboTipoEquipo" class="form-control btnBuscar">
+                    <option value="">Seleccione</option>
+                    <option v-for="lista in dTipoEquipo" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary" data-css="ValidarbtnBuscar" v-on:Click="ListarTabla()">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="cboRecurso">Recurso</label>
+                <select id="cboRecurso" class="form-control btnBuscar">
+                    <option value="">Seleccione</option>
+                    <option v-for="lista in dRecurso" v-bind:value="lista.co_recurso"> {{ lista.de_recurso }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-xl-3 offset-6">
+            <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal" v-on:Click="nuevo()">Nuevo</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="table_content">
+                <div class="table-responsive">
+                    <table id="tbTabla" cellspacing="0" style="width:100%" class="table table-hover table-bordered table-dark text-dark">
+                        <thead class="text-light">
+                            <tr>
+                                <th>Equipo</th>
+                                <th>Tipo Equipo</th>
+                                <th>Tarifa</th>
+                                <th>Recurso</th>   
+                                <th>F. Inicio</th>
+                                <th>F. Fin</th>
+                                <th>Estado Equipo</th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{tituloModal}} </h5>
+                    <button type="button" class="close" v-on:Click="Salir()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="txtDescripcion">Descripción del Equipo</label>
+                                    <input id="txtDescripcion" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="250" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboTipoEquipoModal">Tipo Equipo</label>
+                                    <select id="cboTipoEquipoModal" class="form-control btnGuardarModal">
+                                        <option value="">Seleccione</option>
+                                        <option v-for="lista in dTipoEquipo" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboEstadoEquipoModal">Estado Equipo</label>
+                                    <select id="cboEstadoEquipoModal" class="form-control btnGuardarModal">
+                                        <option value="">Seleccione</option>
+                                        <option v-for="lista in dEstadoEquipo" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboMonedaModal">Moneda</label>
+                                    <select id="cboMonedaModal" class="form-control Obligatorio btnGuardarModal">
+                                        <option value="">Seleccione</option>
+                                        <option v-for="lista in dMoneda" v-bind:value="lista.co_moneda"> {{ lista.de_moneda }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtTarifaEquipo">Importe</label>
+                                    <input id="txtTarifaEquipo" type="text" class="form-control Obligatorio Validar2Decimales btnGuardarModal" maxlength="16" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="txtRecurso">Recurso</label>
+                                    <div class="input-group">
+                                        <input id="txtRecurso" type="text" class="form-control btnGuardarModal" readonly />
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-outline-secondary" id="btnBuscar" type="button" v-on:Click="ListarRecursos()"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtFechaInicioModal">Fecha Inicio</label>
+                                    <input type="text" class="form-control ValidarFecha pull-right btnGuardarModal" id="txtFechaInicioModal" name="txtFechaInicioModal" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtFechaFinModal">Fecha Fin</label>
+                                    <input type="text" class="form-control ValidarFecha pull-right btnGuardarModal" id="txtFechaFinModal" name="txtFechaFinModal" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="txtObservacion">Observación</label>
+                                    <textarea class="form-control btnGuardarModal" rows="5" id="txtObservacion" name="text"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModal" v-on:Click="Salir()">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarModal" v-on:Click="Guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Responsable?</h5>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" id="btnSiModal" v-on:Click="SiModal()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@{Html.RenderPartial("~/Views/Buscador/BuscadorRecurso.cshtml");}

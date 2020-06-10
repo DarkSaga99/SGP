@@ -1,0 +1,192 @@
+﻿
+@{
+    ViewBag.Title = "Mantenimiento de Clientes";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<link href="~/Content/SGP/Cliente.css" rel="stylesheet" />
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+<script src="~/Scripts/SGP/Cliente.js"></script>
+
+
+<div id="app">
+
+
+
+    <div class="row Fonthead border-bottom bg-dark text-white">
+        <span>Clientes</span>
+    </div>
+    <br />
+
+    <div class="row">
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="cboTipoDocumento">Tipo Documento</label>
+                <select id="cboTipoDocumento" class="form-control btnBuscar TipoDocumento">
+                    <option value="">Seleccione</option>
+                    <option v-for="lista in dTipoDocumento" v-bind:value="lista.co_codigo" v-bind:data-documento="lista.tx_valor1" > {{ lista.de_tabla }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtNroDocumento">Nº Documento</label>
+                <input id="txtNroDocumento" type="text" class="form-control  btnBuscar EnterPress EvaluarDocumento " maxlength="15" data-EnterPress="btnBuscar"/>
+            </div>
+        </div>
+
+        <diov class="col-xl-3">
+            <div class="form-group ">
+                <label for="txtNombre">Descripción</label>
+                <input id="txtNombre"  type="text" class="form-control ValidarAlfabeticos btnBuscar EnterPress" maxlength="100" data-EnterPress="btnBuscar"/>
+            </div>
+        </diov>
+
+        <div class="col-xl-3">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary " data-css="ValidarbtnBuscar" v-on:Click="Buscar()">Buscar</button>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3 offset-9">
+            <!-- Button trigger modal -->
+                <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal" v-on:Click="nuevo()">Nuevo</button>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="table_content">
+                <div class="table-responsive">
+                    <table id="tbCliente" class="table table-hover table-bordered table-dark text-dark" cellspacing="0" style="width:100%" >
+                        <thead class="text-light">
+                            <tr>
+                                <th>Código</th>
+                                <th>Razón Social</th>
+                                <th>codTipodoc</th>
+                                <th>Tipo Doc.</th>
+                                <th>N° Doc.</th>
+                                <th>Dirección</th>
+                                <th>Estado Activo</th>
+                                <th>Activo</th>
+                                <th>Ubigeo</th>
+                                <th>Editar</th>
+                                <th>Eliminar</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{tituloModal}}</h5>
+                    <button type="button" class="close" v-on:Click="Salir()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+
+                        <div class="row ">
+                            <div class="col-xl-6">
+                                <div class="form-group ">
+                                    <label for="cboTipoDocumentoModal">Tipo Documento</label>
+                                    <select id="cboTipoDocumentoModal" v-model="selectedDocumento" class="form-control Obligatorio btnGuardarModal TipoDocumentoModal">
+                                        <option value="0">Seleccione</option>
+                                        <option v-for="lista in dTipoDocumento" selected="selectedDocumento === lista.co_codigo" v-bind:value="lista.co_codigo" v-bind:data-documento="lista.tx_valor1"> {{ lista.de_tabla }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="form-group ">
+                                    <label for="txtNroDocumentoModal">Nº Documento</label>
+                                    <input id="txtNroDocumentoModal" type="text" class="form-control Obligatorio btnGuardarModal EvaluarDocumentoModal" maxlength="15" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group ">
+                                    <label for="txtNombreModal">Razón Social</label>
+                                    <input id="txtNombreModal" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="100" />
+                                </div>
+                            </div>
+                        </div>
+                        @{Html.RenderPartial("~/Views/Ubigeo/Index.cshtml");}
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group ">
+                                    <label for="txtDireccionModal">Dirección</label>
+                                    <input id="txtDireccionModal" type="text" class="form-control Obligatorio btnGuardarModal" maxlength="100" />
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group ">
+                                    <label for="txtDireccionModal">Activo</label>
+                                    <div>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="activo" id="rbnActivo" value="1" checked>
+                                            Si
+                                        </label>
+                                        <label class="radio-inline">
+                                            <input type="radio" name="activo" id="rbnInactivo" value="0">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModal" v-on:Click="Salir()">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarModal" v-on:Click="Guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este cliente?</h5>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" id="btnSiModal" v-on:Click="SiModal()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input id="hidIdCliente" type="hidden" />
+
+</div>
+<script>
+  
+</script>

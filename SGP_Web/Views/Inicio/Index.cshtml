@@ -1,0 +1,47 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+
+<div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+    <span> Sistema de Gestión de Proyectos </span>
+</div>
+<br />
+<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <a href='@Url.Action("Index", "Proyecto")'>
+                <img class="d-block w-75" src="~/Imagenes/imgProyectos.jpg" alt="First slide">
+            </a>
+            <div class="carousel-caption d-none d-md-block">
+                <div class="carousel-Element-Size">Proyectos</div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <a href='@Url.Action("Index", "CronogramaPago")'>
+                <img class="d-block w-75" src="~/Imagenes/imgCronograma.jpg" alt="Second slide">
+            </a>
+            <div class="carousel-caption d-none d-md-block">
+                <div class="carousel-Element-Size">Cronograma de Pagos</div>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <a href='@Url.Action("Index", "CronogramaEjecucion")'>
+                <img class="d-block w-75" src="~/Imagenes/imgPagos.jpg" alt="Third slide">
+            </a>
+            <div class="carousel-caption d-none d-md-block">
+                <div class="carousel-Element-Size">Ejecución de Pagos</div>
+            </div>
+        </div>
+    </div>
+    <div class="carousel-control-prev carousel-Element-Color" href="#carouselExampleControls" role="button" data-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="sr-only">Anterior</span>
+    </div>
+    <div class="carousel-control-next carousel-Element-Color" href="#carouselExampleControls" role="button" data-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Siguiente</span>
+    </div>
+</div>

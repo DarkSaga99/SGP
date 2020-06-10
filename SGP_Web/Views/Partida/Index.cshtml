@@ -1,0 +1,186 @@
+﻿
+@{
+    ViewBag.Title = "Mantenimiento de Partida";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<link href="~/Content/SGP/Cliente.css" rel="stylesheet" />
+<script src="~/Scripts/SGP/Partida.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+    <span>Partida</span>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-xl-3">
+        <div class="form-group ">
+            <label for="cboGrupoPartida">Grupo Partida</label>
+            <select id="cboGrupoPartida" class="form-control">
+                <option value="">Seleccione</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-xl-3">
+        <div class="form-group ">
+            <label for="txtPartida">Partida</label>
+            <input id="txtPartida" type="text" class="form-control EnterPress" maxlength="30" data-EnterPress="btnBuscar" />
+        </div>
+    </div>
+
+    <div class="col-xl-3">
+        <div class="form-group ">
+            <label for="btnBuscar">&nbsp;</label>
+            <button type="button" id="btnBuscar" class="form-control btn btn-primary">Buscar</button>
+        </div>
+    </div>
+
+    <div class="col-xl-3">
+        <!-- Button trigger modal -->
+        <div class="form-group ">
+            <label for="btnNuevo">&nbsp;</label>
+            <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal" data-target="#exampleModalCenter">Nuevo</button>
+        </div>
+    </div>
+
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div id="table_content">
+            <div class="table-responsive">
+                <table id="tbPartida" cellspacing="0" style="width:100%" class="table table-hover table-bordered table-dark text-dark">
+                    <thead class="text-light">
+                        <tr>
+                            <th>Descripcion</th>
+                            <th>GrupoPartida</th>
+                            <th>Tiempo</th>
+                            <th>Costo</th>
+                            <th>Activo</th>
+                            <th>Editar</th>
+                            <th>Eliminar</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Nueva Partida</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-xl-12">
+                            <div class="form-group ">
+                                <label for="txtNombreModal">Partida</label>
+                                <input id="txtNombreModal" type="text" class="form-control btnGuardarModal Obligatorio" maxlength="30" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label for="cboTipoTiempo">Tipo Tiempo</label>
+                                <select id="cboTipoTiempo" class="form-control Obligatorio btnGuardarModal">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group ">
+                                <label for="txtTiempo">Tiempo</label>
+                                <input id="txtTiempo" type="text" class="form-control ValidarNumeros Obligatorio btnGuardarModal" maxlength="30" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label for="cboMonedaModal">Moneda</label>
+                                <select id="cboMonedaModal" class="form-control Obligatorio btnGuardarModal">
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-xl-6">
+                            <div class="form-group">
+                                <label for="txtMonto">Monto</label>
+                                <input id="txtMonto" type="text" class="form-control Obligatorio btnGuardarModal Validar2Decimales" maxlength="16" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-xl-6">
+                            <div class="form-group ">
+                                <label for="cboGrupoPartidaModal">GrupoPartida</label>
+                                <select id="cboGrupoPartidaModal" class="form-control Obligatorio btnGuardarModal"></select>
+                            </div>
+                        </div>
+
+                        <div class="col-xl-6">
+                            <div class="form-group ">
+                                <label for="txtDireccionModal">Activo</label>
+                                <div>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="activo" id="rbnActivo" value="S">
+                                        Si
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="activo" id="rbnInactivo" value="N">
+                                        No
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer FontfooterModal">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCerrarModal">Cerrar</button>
+                <button type="button" class="btn btn-primary" id="btnGuardarModal">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <h5 style="color:red;">¿Desea eliminar este Partida?</h5>
+            </div>
+            <div class="modal-footer FontfooterModal">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-success" id="btnSiModal">Si</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input id="hidIdPartida" type="hidden" />
+
+
+
+
+
+

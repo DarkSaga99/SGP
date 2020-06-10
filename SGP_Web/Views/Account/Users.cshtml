@@ -1,0 +1,278 @@
+﻿@model SGP_Web.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Registro de Ususario";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+    <span>Usuario</span>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-xl-3 offset-9">
+        <div class="form-group ">
+            <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal">Nuevo</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div id="table_content">
+            <div class="table-responsive">
+                <table id="tbTabla" cellspacing="0" style="width:100%" class="table  table-hover table-bordered ">
+                    <thead class="text-light table-dark ">
+                        <tr>
+                            <th>Usuario</th>
+                            <th>Email</th>
+                            <th style="display:none"></th>
+                            <th style="display:none"></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in ViewBag.Usuarios)
+                        {
+                            <tr>
+                                <td>@item.UserName</td>
+                                <td>@item.Email</td>
+                                <td style="display:none">@item.Id</td>
+
+                                @if (item.Roles.Count > 0)
+                                {
+                                    <td style="display:none">@item.Roles[0].RoleId</td>
+                                }
+                                else
+                                {
+                                    <td style="display:none"></td>
+                                }
+                                <th>
+                                    <input id="btnEditar" type="button" class="form-control btnEditar" data-id="@item.Id" value="Editar" />
+                                </th>
+                                <td>
+                                    <input id="btnEliminar" type="button" class="form-control btnEliminar" data-id="@item.Id" value="Elimar" />
+                                    @*@Html.ActionLink("Eliminar", "SetPassword", "Manage", new { id = item.Id }, new { @class = "form-control" })*@
+
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Delete", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Usuario?</h5>
+                    <input type="hidden" id="idUser" name="id" />
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <input type="submit" value="Si" class="btn btn-success btnSiModal" />
+                    @*<button type="button" class="btn btn-success btnSiModal" id="btnSiModal" >Si</button>*@
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="EditarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Editar Rol</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Edit", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control Email" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-12">
+                                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control UserName" })
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                                <div class="col-md-12">
+                                    @*@Html.PasswordFor(m => m.Password, new { @class = "form-control Password" })*@
+                                    <input type="password" id="NewPassword" name="NewPassword" class="form-control" placeholder="************" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                @Html.Label("user Role", new { @class = "col-md-12 control-label" })
+                                <div class="col-md-12">
+                                    @if (ViewBag.Name != null)
+                                    {
+                                        @Html.DropDownList("UserRoles", (SelectList)ViewBag.Name, "Seleccione", new { @class = "form-control  UserRoles" })
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <input type="hidden" id="idUsuario" name="Id" />
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <input type="submit" value="Actualizar" class="btn btn-secondary" />
+                    @*<button type="button" class="btn btn-success btnSiModal" id="btnSiModal" v-on:Click="SiModal()">Si</button>*@
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+<div class="modal fade" id="CrearModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Agregar Usuario</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-12 control-label" })
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.UserName, new { @class = "col-md-12 control-label" })
+                        <div class="col-md-12">
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-12 control-label" })
+                        <div class="col-md-12">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-12 control-label" })
+                        <div class="col-md-12">
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("user Role", new { @class = "col-md-12 control-label" })
+                        <div class="col-md-12">
+                            @if (ViewBag.Name != null)
+                            {
+                                @Html.DropDownList("UserRoles", (SelectList)ViewBag.Name, "Seleccione", new { @class = "form-control " })
+                            }
+                        </div>
+                    </div>
+
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <input type="submit" value="Grabar" class="btn btn-secondary" />
+                    @*<button type="button" class="btn btn-success btnSiModal" id="btnSiModal" v-on:Click="SiModal()">Si</button>*@
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+<script type="text/javascript">
+
+    $('#btnNuevo').on('click', function () {
+        $('#CrearModal').modal('show');
+        //window.location.href = '/Account/Register/';
+    });
+
+    $('#tbTabla .btnEditar').on('click', function () {
+
+        var data = $(this).parent();
+        $(data).parent("tr").each(function () {
+            var data = $(this).children();
+            var Nombre = $(data[0]).text().trim();
+            var Email = $(data[1]).text().trim();
+            var id = $(data[2]).text().trim();
+            var Rol = $(data[3]).text().trim();
+
+            $('#OldPassword').val();
+            $('#Email').val(Email);
+            $('#UserName').val(Nombre);
+            $('#UserRoles').val(Rol);
+            $('#idUsuario').val(id);
+            $('#EditarModal').modal('show');
+        });
+    });
+    $('#tbTabla .btnEliminar').on('click', function () {
+        id = $(this).attr('data-id')
+        $('#idUser').val(id);
+
+        $('#eliminarModal').modal('show');
+    });
+
+</script>
+
+

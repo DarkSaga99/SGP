@@ -1,0 +1,38 @@
+﻿
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div class="form-group ">
+            <label for="cboDepartamento">Departamento</label>
+            <select id="cboDepartamento" class="form-control Obligatorio Obligatorio btnGuardarModal" v-model="selectedDepartamento" v-on:Change="ListarProvincia()">
+                <option value="">Seleccione</option>
+                <option v-for="item in dDepartamentos" selected="selectedDepartamento === item.co_ubigeo" v-bind:value="item.co_ubigeo">{{ item.de_ubigeo }}</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="form-group ">
+            <label for="cboProvincia">Provincia</label>
+            <select id="cboProvincia" class="form-control Obligatorio Obligatorio btnGuardarModal" v-model="selectedProvincia" v-on:Change="ListarDistrito()">
+                <option value="">Seleccione</option>
+                <option v-for="item in dProvincia" selected="selectedProvincia === item.co_ubigeo" v-bind:value="item.co_ubigeo">{{ item.de_ubigeo }}</option>
+            </select>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xl-12">
+        <div class="form-group ">
+            <label for="cboDistrito">Distrito</label>
+            <select id="cboDistrito" class="form-control Obligatorio Obligatorio btnGuardarModal" v-model="selectedDistrito">
+                <option value="">Seleccione</option>
+                <option v-for="item in dDistrito" selected="selectedDistrito === item.co_ubigeo" v-bind:value="item.co_ubigeo">{{ item.de_ubigeo }}</option>
+            </select>
+        </div>
+    </div>
+</div>
+@*</div>
+    </body>*@

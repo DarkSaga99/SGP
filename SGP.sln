@@ -1,0 +1,49 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGP_Entity", "SGP_Entity\SGP_Entity.csproj", "{4B5C119E-B10D-45CD-B1A2-5F0F3DF0BAF9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGP_Data", "SGP_Data\SGP_Data.csproj", "{8A904F75-EF70-4FE4-87F9-B3D0827D2B43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SGP_Web", "SGP_Web\SGP_Web.csproj", "{7BB51579-334A-45DB-9B9B-CC356C252DA5}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{4B5C119E-B10D-45CD-B1A2-5F0F3DF0BAF9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B5C119E-B10D-45CD-B1A2-5F0F3DF0BAF9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B5C119E-B10D-45CD-B1A2-5F0F3DF0BAF9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B5C119E-B10D-45CD-B1A2-5F0F3DF0BAF9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A904F75-EF70-4FE4-87F9-B3D0827D2B43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A904F75-EF70-4FE4-87F9-B3D0827D2B43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A904F75-EF70-4FE4-87F9-B3D0827D2B43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A904F75-EF70-4FE4-87F9-B3D0827D2B43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7BB51579-334A-45DB-9B9B-CC356C252DA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7BB51579-334A-45DB-9B9B-CC356C252DA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7BB51579-334A-45DB-9B9B-CC356C252DA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7BB51579-334A-45DB-9B9B-CC356C252DA5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 4
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://iqpc-005:8080/tfs/sgp_repositorio
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = SGP_Data\\SGP_Data.csproj
+		SccProjectName1 = SGP_Data
+		SccLocalPath1 = SGP_Data
+		SccProjectUniqueName2 = SGP_Entity\\SGP_Entity.csproj
+		SccProjectName2 = SGP_Entity
+		SccLocalPath2 = SGP_Entity
+		SccProjectUniqueName3 = SGP_Web\\SGP_Web.csproj
+		SccProjectName3 = SGP_Web
+		SccLocalPath3 = SGP_Web
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,180 @@
+﻿@model IEnumerable<Microsoft.AspNet.Identity.EntityFramework.IdentityRole>
+@{
+    ViewBag.Title = "Roles";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+<script src="~/Scripts/SGP/Roles.js"></script>
+
+<div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+    <span>Roles</span>
+</div>
+
+<br />
+
+<div class="row">
+    <div class="col-xl-3 offset-9">
+        <div class="form-group ">
+            <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal">Nuevo</button>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-xl-12">
+        <div id="table_content">
+            <div class="table-responsive">
+                <table id="tbTabla" cellspacing="0" style="width:100%" class="table  table-hover table-bordered ">
+                    <thead class="text-light table-dark ">
+                        <tr>
+                            <th>Rol</th>
+                            <th style="display:none"></th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tbBody">
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td style="width:100%; border:dotted 1px;">
+                                    @Html.DisplayFor(m => item.Name)
+                                </td>
+                                <td style="display:none">
+                                    @Html.Hidden("Id",item.Id)
+                                </td>
+                                <td>
+                                    <input id="btnEditar" type="button" class="form-control btnEditar" data-id="@item.Id" value="Editar" />
+                                    @*@Html.ActionLink("Editar", "Edit", "Role", new { id = item.Id }, new { @class = "form-control btnEditar" })*@
+                                </td>
+                                <td>
+                                    <input id="btnEliminar" type="button" class="form-control btnEliminar" data-id="@item.Id" value="Elimar" />
+                                    @*@Html.ActionLink("Eliminar", "Delete", "Role", new { id = item.Id }, new { @class = "form-control" })*@
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Delete", "Role", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Rol?</h5>
+                    <input type="hidden" id="idRol" name="id" />
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <input type="submit" value="Si" class="btn btn-success btnSiModal"/>
+                    @*<button type="button" class="btn btn-success btnSiModal" id="btnSiModal" >Si</button>*@
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="CrearModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Agregar Rol</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Create", "Role", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+                    <p> Ingrese el nombre del rol:</p>
+                    <input class="form-control text-box single-line" id="Name" name="Name" type="text" value="">
+                </div>
+                    <div class="modal-footer FontfooterModal">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                        <input type="submit" value="Grabar" class="btn btn-secondary" />
+                        @*<button type="button" class="btn btn-success btnSiModal" id="btnSiModal" v-on:Click="SiModal()">Si</button>*@
+                    </div>
+            }
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="EditarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header FontheadModal">
+                <h5 class="modal-title" id="exampleModalLongTitle">Editar Rol</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            @using (Html.BeginForm("Edit", "Role", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                <div class="modal-body">
+                    <p> Ingrese el nombre del rol:</p>
+                    <input class="form-control text-box single-line " id="NameEdit" name="Name" type="text" value="" >
+                    <input type="hidden" id="idCrear" name="Id" />
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <input type="submit" value="Actualizar" class="btn btn-secondary" />
+                    @*<button type="button" class="btn btn-success btnSiModal" id="btnSiModal" v-on:Click="SiModal()">Si</button>*@
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+@*<div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{tituloModal}}</h5>
+                    <button type="button" class="close" v-on:Click="Salir()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+
+                        @using (Html.BeginForm())
+                        {
+                            <p> Enter User Role Name:</p>
+
+                            @Html.EditorFor(m => m.Name)
+                            <input type="submit" value="Create Role" />
+                        }
+
+                    </div>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModal" v-on:Click="Salir()">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarModal" v-on:Click="Guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>*@
+
+
+

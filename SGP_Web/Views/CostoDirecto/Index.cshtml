@@ -1,0 +1,235 @@
+﻿
+@{
+    ViewBag.Title = "Mantenimiento de Proyectos";
+    Layout = Layout = Request.IsAjaxRequest() ? null : "~/Views/Shared/_LayoutSGP.cshtml";
+}
+
+<script type="text/javascript" src="~/Scripts/SGP/CostoDirecto.js"></script>
+<script src="~/Scripts/SGP/ValidacionGeneral.js"></script>
+
+<div id="app">
+
+    <div class="row Fonthead border-bottom bg-dark text-white" style="font-size:x-large;font-weight:bolder;">
+        <span>Costos Directos</span>
+    </div>
+
+    <br />
+
+    <div class="row">
+
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="cboTipoCosto">Tipo Costo</label>
+                <select id="cboTipoCosto" class="form-control btnBuscar" v-on:change="SeleccionTipoCosto">
+                    <option value="">Seleccione</option>
+                    <option v-for="lista in dTipoCosto" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="txtFecha">Fecha</label>
+                <input type="text" class="form-control ValidarFecha pull-right btnBuscar" id="txtFecha" name="txtFecha" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+            </div>
+        </div>
+
+        <div class="col-xl-3">
+            <div class="form-group">
+                <label for="cboMoneda">Moneda</label>
+                <select id="cboMoneda" class="form-control btnBuscar">
+                    <option value="">Seleccione</option>
+                    <option v-for="lista in dMoneda" v-bind:value="lista.co_moneda"> {{ lista.de_moneda }}</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="col-xl-3 ">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnBuscar" class="form-control btn btn-primary" data-css="ValidarbtnBuscar" v-on:Click="ListarTabla()">Buscar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-3">
+            @*<div class="form-group">
+                <label for="txtDescripcion">{{ TituloTipoCosto }}</label>
+                <input type="text" class="form-control btnBuscar" id="txtDescripcion" />
+            </div>*@
+        </div>
+
+        <div class="col-xl-3 offset-6">
+            <div class="form-group ">
+                <label for="btnBuscar">&nbsp;</label>
+                <button type="button" id="btnNuevo" class="form-control btn btn-success" data-toggle="modal" v-on:Click="nuevo()">Nuevo</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xl-12">
+            <div id="table_content">
+                <div class="table-responsive">
+                    <table id="tbTabla" cellspacing="0" style="width:100%" class="table table-hover table-bordered table-dark text-dark">
+                        <thead class="text-light">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Tipo Costo</th>
+                                <th>Tipo Cambio</th>
+                                <th>Importe</th>
+                                <th>Costo Local</th>                                
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">{{tituloModal}} </h5>
+                    <button type="button" class="close" v-on:Click="Salir()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="container">
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtFechaModal">Fecha</label>
+                                    <input type="text" class="form-control Obligatorio ValidarFecha pull-right btnGuardarModal" id="txtFechaModal" name="txtFechaModal" data-inputmask="'alias': 'dd/mm/yyyy'" data-mask>
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboTipoCostoModal">Tipo Costo</label>
+                                    <select id="cboTipoCostoModal" class="form-control Obligatorio btnGuardarModal" v-on:change="SeleccionTipoCostoModal">
+                                        <option value="0">Seleccione</option>
+                                        <option v-for="lista in dTipoCosto" v-bind:value="lista.co_codigo"> {{ lista.de_tabla }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="txtDescripcionTipoCosto">{{ TituloTipoCostoModal }}</label>
+                                    <div class="input-group">
+                                        <input id="txtDescripcionTipoCosto" type="text" class="form-control Obligatorio btnGuardarModal" readonly />
+                                        <div class="input-group-btn">
+                                            <button class="btn btn-outline-secondary" id="btnBuscar" type="button" v-on:Click="ListarRecusoEquipo()"><i class="fa fa-search"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="cboMonedaModal">Moneda</label>
+                                    <select id="cboMonedaModal" v-on:Change="ObtenerTipoCambio()" class="form-control Obligatorio btnGuardarModal" >
+                                        <option value="">Seleccione</option>
+                                        <option v-for="lista in dMoneda" v-bind:value="lista.co_moneda"> {{ lista.de_moneda }}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtTipoCambioModal">Tipo Cambio</label>
+                                    <input type="text" class="form-control btnGuardarModal" id="txtTipoCambioModal" readonly />
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtImporteModal">Importe</label>
+                                    <input id="txtImporteModal" type="text" class="form-control Obligatorio Validar2Decimales btnGuardarModal" maxlength="16" v-on:keyup="CalcularCostoLocal" />
+                                </div>
+                            </div>
+                            <div class="col-xl-6">
+                                <div class="form-group">
+                                    <label for="txtCostoLocalModal">Costo Local</label>
+                                    <div class="input-group">
+                                        <span class="input-group-append">
+                                            <div class="input-group-text bg-transparent">{{SimboloMondaLocal}}</div>
+                                        </span>
+                                        <input type="text" class="form-control Validar2Decimales btnGuardarModal" id="txtCostoLocalModal" readonly />
+                                    </div>
+                                </div>
+                            </div>
+                            
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="cboCentroCosto">Centro de Costo</label>
+                                    <select id="cboCentroCosto"  class="form-control Obligatorio btnGuardarModal">
+                                        <option value="">Seleccione</option>
+                                        <option v-for="lista in dCentroCosto" v-bind:value="lista.co_ccosto"> {{ lista.de_ccosto }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-xl-12">
+                                <div class="form-group">
+                                    <label for="txtObservacionModal">Observación</label>
+                                    <textarea class="form-control btnGuardarModal" rows="5" id="txtObservacionModal" name="text"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModal" v-on:Click="Salir()">Cerrar</button>
+                    <button type="button" class="btn btn-primary" id="btnGuardarModal" v-on:Click="Guardar()">Guardar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="eliminarModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header FontheadModal">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Mensaje de confirmación</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h5 style="color:red;">¿Desea eliminar este Responsable?</h5>
+                </div>
+                <div class="modal-footer FontfooterModal">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-success" id="btnSiModal" v-on:Click="SiModal()">Si</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@{Html.RenderPartial("~/Views/Buscador/BuscadorEquipo.cshtml");}
+@{Html.RenderPartial("~/Views/Buscador/BuscadorRecurso.cshtml");}
+
+
+
